@@ -1,5 +1,6 @@
 name: Follow upstream repo
 on:
+  push:
   schedule:
     - cron:  '*/5 * * * *'
 jobs:
