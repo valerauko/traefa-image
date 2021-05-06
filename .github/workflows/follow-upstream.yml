@@ -17,6 +17,7 @@ jobs:
           current=$(sed -nr 's/\s+tag: "sha-(\w+)"/\1/p' apps/10-traefik.yaml)
           cd traefik
           latest=$(git rev-parse --short HEAD)
+          echo "Currently deployed: $current\nLatest: $latest"
           echo ::set-output name=upstream::$latest
           echo ::set-output name=updated::$([ "$current" == "$latest" ] && echo 'true' || echo 'false')
           cd -
