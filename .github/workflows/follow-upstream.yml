@@ -17,7 +17,7 @@ jobs:
           current=$(sed -nr 's/\s+tag: "sha-(\w+)"/\1/p' apps/10-traefik.yaml)
           cd traefik
           latest=$(git rev-parse --short HEAD)
-          different=$([ "$current" == "$latest" ] && echo 'true' || echo 'false')
+          different=$([ "$current" == "$latest" ] && echo 'false' || echo 'true')
           echo "Currently deployed: $current. Latest: $latest. Are they different? $different"
           echo "::set-output name=upstream::$latest"
           echo "::set-output name=updated::$different"
