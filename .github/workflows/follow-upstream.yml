@@ -9,12 +9,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Check out upstream
-        run: git clone --depth=1 https://github.com/traefik/traefik
+        run: git clone https://github.com/traefik/traefik
       - name: Compare commit hash
         id: commit-check
         run: |
           set -euo pipefail
-          current=$(sed -nr 's/\s+tag: "sha-(\w+)"/\1/p' apps/10-traefik.yaml)
+          current=$(sed -nr 's/\s+tag: ".+\+(\w+)"/\1/p' apps/10-traefik.yaml)
           cd traefik
           latest=$(git rev-parse --short HEAD)
           different=$([ "$current" == "$latest" ] && echo 'false' || echo 'true')
@@ -28,8 +28,9 @@ jobs:
         run: |
           set -euo pipefail
           cd traefik
+          last_tag=$(git describe --abbrev=0 --tags)
           make build-image
-          new_image="valerauko/traefa:sha-${{ steps.commit-check.outputs.upstream }}"
+          new_image="valerauko/traefa:$last_tag+${{ steps.commit-check.outputs.upstream }}"
           echo "::set-output name=new-image::$new_image"
           docker tag traefik/traefik:latest "$new_image"
           cd -
