@@ -28,7 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           cd traefik
-          last_tag=$(git describe --abbrev=0 --tags)
+          last_tag=$(git describe --abbrev=0 --tags | cut -c2-)
           make build-image
           new_image="valerauko/traefa:$last_tag-${{ steps.commit-check.outputs.upstream }}"
           echo "::set-output name=new-image::$new_image"
