@@ -29,8 +29,8 @@ jobs:
           set -euo pipefail
           cd traefik
           make build-image
-          new_image="valerauko/traefa:sha-${{ steps.commit-check.outputs.upstream }})"
-          echo ::set-output name=new-image::$new_image
+          new_image="valerauko/traefa:sha-${{ steps.commit-check.outputs.upstream }}"
+          echo "::set-output name=new-image::$new_image"
           docker tag traefik/traefik:latest "$new_image"
           cd -
       - name: Login to Docker Hub
