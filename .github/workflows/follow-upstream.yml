@@ -41,6 +41,7 @@ jobs:
         if: steps.commit-check.outputs.updated == 'true'
         run: docker push ${{ steps.build-image.outputs.new-image }}
       - name: Update manifest
+        if: steps.commit-check.outputs.updated == 'true'
         run: |
           sed -i -r -e "s/\"sha-(\w+)\"/\"sha-${{ steps.commit-check.outputs.upstream }}\"/i" apps/10-traefik.yaml
       - name: Commit latest release version
