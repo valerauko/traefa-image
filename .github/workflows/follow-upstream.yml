@@ -17,9 +17,10 @@ jobs:
           current=$(sed -nr 's/\s+tag: "sha-(\w+)"/\1/p' apps/10-traefik.yaml)
           cd traefik
           latest=$(git rev-parse --short HEAD)
-          echo "Currently deployed: $current\nLatest: $latest"
-          echo ::set-output name=upstream::$latest
-          echo ::set-output name=updated::$([ "$current" == "$latest" ] && echo 'true' || echo 'false')
+          different=$([ "$current" == "$latest" ] && echo 'true' || echo 'false')
+          echo "Currently deployed: $current. Latest: $latest. Are they different? $different"
+          echo "::set-output name=upstream::$latest"
+          echo "::set-output name=updated::$different"
           cd -
       - name: Build Docker image
         if: steps.commit-check.outputs.updated == 'true'
